@@ -288,12 +288,27 @@
             localStorage.setItem('transactions', JSON.stringify(transactions));
         }
 
+        /**
+         * Función auxiliar para parsear la fecha YYYY-MM-DD y evitar el error de zona horaria (UTC).
+         * Se crea un objeto Date forzando la medianoche local, lo que asegura que el día sea correcto.
+         * @param {string} dateString La fecha en formato YYYY-MM-DD.
+         * @returns {Date} Objeto Date con el día correcto.
+         */
+        function parseLocalMidnightDate(dateString) {
+            if (!dateString) return null;
+            // Al usar la sintaxis YYYY/MM/DD, JS la trata como hora local en lugar de UTC
+            return new Date(dateString.replace(/-/g, '/')); 
+        }
+
         // Función para renderizar la tabla de transacciones (Ahora solo muestra los últimos 10)
         function renderTransactions() {
             transactionsTable.innerHTML = '';
             
             // Ordena las transacciones por fecha y luego toma las últimas 10
-            const sortedTransactions = [...transactions].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+            const sortedTransactions = [...transactions].sort((a, b) => {
+                // Usamos la nueva función para asegurar la comparación correcta de la fecha
+                return parseLocalMidnightDate(b.fecha) - parseLocalMidnightDate(a.fecha);
+            });
             const lastTenTransactions = sortedTransactions.slice(0, 10);
             
             lastTenTransactions.forEach((t, index) => {
@@ -310,8 +325,8 @@
 
                 const cantidadClass = t.concepto === 'Ingreso' ? 'text-custom-income' : 'text-custom-expense';
                 
-                // Formatear la fecha a DD/MM/AA
-                const date = new Date(t.fecha);
+                // CORRECCIÓN DE FECHA: Usamos la función auxiliar para obtener el objeto Date correcto
+                const date = parseLocalMidnightDate(t.fecha);
                 const formattedDate = date.toLocaleDateString('es-AR', {
                     day: '2-digit',
                     month: '2-digit',
@@ -348,17 +363,25 @@
 
         // Función para actualizar el resumen de totales
         function updateSummary() {
-            const fechaInicio = fechaInicioInput.value ? new Date(fechaInicioInput.value) : null;
-            const fechaFinal = fechaFinalInput.value ? new Date(fechaFinalInput.value) : null;
+            // CORRECCIÓN DE FECHA: Usamos la función auxiliar para obtener las fechas correctas
+            const fechaInicio = fechaInicioInput.value ? parseLocalMidnightDate(fechaInicioInput.value) : null;
+            const fechaFinal = fechaFinalInput.value ? parseLocalMidnightDate(fechaFinalInput.value) : null;
 
             const filteredTransactions = transactions.filter(t => {
-                const transactionDate = new Date(t.fecha + 'T00:00:00'); // Asegura la hora a medianoche
+                // CORRECCIÓN DE FECHA: Usamos la función auxiliar para la fecha de la transacción
+                const transactionDate = parseLocalMidnightDate(t.fecha); 
+                
+                if (!transactionDate) return false;
+
                 const afterStart = !fechaInicio || transactionDate >= fechaInicio;
+                
                 // Para incluir el día final:
                 const endOfDay = fechaFinal ? new Date(fechaFinal.getTime()) : null;
                 if (endOfDay) {
-                    endOfDay.setHours(23, 59, 59, 999);
+                    // Establece la hora al final del día (23:59:59.999) en la hora local
+                    endOfDay.setHours(23, 59, 59, 999); 
                 }
+                
                 const beforeEnd = !endOfDay || transactionDate <= endOfDay;
                 return afterStart && beforeEnd;
             });
@@ -380,7 +403,10 @@
             const monthlyData = {};
 
             transactions.forEach(t => {
-                const date = new Date(t.fecha);
+                // CORRECCIÓN DE FECHA: Usamos la función auxiliar para obtener la fecha correcta
+                const date = parseLocalMidnightDate(t.fecha);
+                if (!date) return; // Salta si la fecha no es válida
+                
                 const year = date.getFullYear();
                 const month = date.getMonth();
 
@@ -447,7 +473,7 @@
             }, duration); 
         }
 
-        // Función para enviar una sola transacción a la hoja de cálculo (CORREGIDA)
+        // Función para enviar una sola transacción a la hoja de cálculo
         async function saveTransactionToSheet(transaction) {
             // Verificar si la URL de Apps Script ha sido configurada
             if (googleAppsScriptURL.includes("AKfycbwCmLQ3XjOCg_wh8n7f3wxEvtTzZJrpY7P1vDYUnBwRA9cvUtPPRsGgy2vuouqcyHmkEQ")) {
@@ -467,19 +493,15 @@
                 });
 
                 // 2. Usamos el método GET con los parámetros, que Apps Script maneja como doGET
-                // El endpoint de Apps Script debe terminar en /exec
                 const finalUrl = `${googleAppsScriptURL}?${params.toString()}`;
 
                 // Usamos 'no-cors' para evitar errores de CORS, ya que solo necesitamos enviar el dato y no leer la respuesta de Apps Script
                 const response = await fetch(finalUrl, {
-                    method: 'GET', // Usamos GET para el envío de datos simples a doGET
+                    method: 'GET', 
                     mode: 'no-cors', 
                     cache: 'no-cache',
                 });
                 
-                // Nota: Debido a 'no-cors', la 'response' aquí es opaca y no se puede verificar el éxito.
-                // Si el script es correcto, el dato se habrá enviado. 
-                // Asumimos el éxito para la UI, pero el verdadero éxito depende del script de Apps Script.
                 const message = "¡Transacción guardada localmente y enviada a Google Sheet! (Verifica la Planilla en unos segundos)";
                 showMessageBox(message);
 
@@ -527,11 +549,9 @@
 
         // Evento para abrir la planilla de Google
         openSpreadsheetBtn.addEventListener('click', () => {
-             // Como la variable apunta al script, no a la planilla, no la abrimos. 
-             // Le pedimos al usuario que pegue el enlace de la planilla directamente, o asumimos la URL del script sin /exec
-            const genericSheetUrl = "https://docs.google.com/spreadsheets/u/0/"; 
+            const genericSheetUrl = "https://docs.google.com/spreadsheets/d/1_vbnGJGiw2QhJ0MJL5WUEIi2pClnO-RMhNGjsDTWQoo/edit?gid=0#gid=0"; 
             if (googleAppsScriptURL && !googleAppsScriptURL.includes("AKfycbwCmLQ3XjOCg_wh8n7f3wxEvtTzZJrpY7P1vDYUnBwRA9cvUtPPRsGgy2vuouqcyHmkEQ")) {
-                 showMessageBox("Abriendo la URL de tu Apps Script. Si quieres abrir la planilla, pega su URL aquí.");
+                 showMessageBox("https://script.google.com/macros/s/AKfycbzxGGausq-4QmyspNRj2GrhWctMrAvYVj3BsIbMUEaTHWi7mVBEV0CpORNHuaYSzsAmew/exec");
                  window.open(googleAppsScriptURL.replace('/exec', ''), '_blank');
             } else {
                  showMessageBox("Por favor, configura la URL de tu Google Apps Script para usar este botón.", 3000);
@@ -543,14 +563,13 @@
         // Registro del Service Worker para PWA (mantenido)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                // Solo registramos si tenemos un archivo 'service-worker.js' real
-                // navigator.serviceWorker.register('service-worker.js') 
-                //     .then(reg => {
-                //         console.log('Service Worker registrado con éxito:', reg);
-                //     })
-                //     .catch(err => {
-                //         console.log('Fallo el registro de Service Worker:', err);
-                //     });
+                navigator.serviceWorker.register('service-worker.js') 
+                    .then(reg => {
+                        console.log('Service Worker registrado con éxito:', reg);
+                    })
+                    .catch(err => {
+                        console.log('Fallo el registro de Service Worker:', err);
+                    });
             });
         }
 
@@ -586,7 +605,7 @@
                 
                 if (combinedTransactions.length > 0) {
                     // Se ordena por fecha para la vista de consulta
-                    combinedTransactions.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+                    combinedTransactions.sort((a, b) => parseLocalMidnightDate(a.fecha) - parseLocalMidnightDate(b.fecha));
                     renderFilteredTable(combinedTransactions);
                     resultsTableContainer.classList.remove('hidden');
                 }
@@ -609,7 +628,9 @@
                     maximumFractionDigits: 2
                 }).format(t.cantidad);
 
-                const formattedDate = new Date(t.fecha).toLocaleDateString('es-AR', {
+                // CORRECCIÓN DE FECHA: Usamos la función auxiliar para la fecha
+                const date = parseLocalMidnightDate(t.fecha);
+                const formattedDate = date.toLocaleDateString('es-AR', {
                     day: '2-digit',
                     month: '2-digit',
                     year: '2-digit'
