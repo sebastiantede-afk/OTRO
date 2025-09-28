@@ -1,0 +1,142 @@
+Startup : -is
+Startup : -is
+Go Installer
+corel
+Reg_Path : No key was find: HKEY_LOCAL_MACHINE\SOFTWARE\Adobe\Adobe Bridge\cc\installer : installpath
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.14\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15.1\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.16\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.20\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelDRAW.CMX.16\shell\Open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelBarCode.16\protocol\StdFileEditing\server : 
+Reg_Path : No key was find: HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432node\Adobe\Adobe Bridge\cc\installer : installpath
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.14\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15.1\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.16\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.20\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelDRAW.CMX.16\shell\Open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelBarCode.16\protocol\StdFileEditing\server : 
+CS4
+Reg_Path : No key was find: HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Adobe\Adobe Bridge\cs4\installer : installpath
+Reg_Path : No key was find: HKEY_LOCAL_MACHINE\SOFTWARE\Adobe\Adobe Bridge\cs4\installer : installpath
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.14\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15.1\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.16\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.20\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelDRAW.CMX.16\shell\Open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelBarCode.16\protocol\StdFileEditing\server : 
+CS5
+Reg_Path : No key was find: HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Adobe\Adobe Bridge\cs5\installer : installpath
+Reg_Path : No key was find: HKEY_LOCAL_MACHINE\SOFTWARE\Adobe\Adobe Bridge\cs5\installer : installpath
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.14\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15.1\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.16\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.20\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelDRAW.CMX.16\shell\Open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelBarCode.16\protocol\StdFileEditing\server : 
+CS51
+Reg_Path : No key was find: HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Adobe\Adobe Bridge\cs5.1\installer : installpath
+Reg_Path : No key was find: HKEY_LOCAL_MACHINE\SOFTWARE\Adobe\Adobe Bridge\cs5.1\installer : installpath
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.14\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15.1\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.16\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.20\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelDRAW.CMX.16\shell\Open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelBarCode.16\protocol\StdFileEditing\server : 
+CS6
+Reg_Path : No key was find: HKEY_LOCAL_MACHINE\SOFTWARE\Adobe\Adobe Bridge\cs6\installer : installpath
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.14\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15.1\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.16\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.20\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelDRAW.CMX.16\shell\Open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelBarCode.16\protocol\StdFileEditing\server : 
+Reg_Path : No key was find: HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432node\Adobe\Adobe Bridge\cs6\installer : installpath
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.14\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15.1\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.16\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.20\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelDRAW.CMX.16\shell\Open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelBarCode.16\protocol\StdFileEditing\server : 
+CC7
+Reg_Path : No key was find: HKEY_LOCAL_MACHINE\SOFTWARE\Adobe\Adobe Bridge\cc\installer : installpath
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.14\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15.1\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.16\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.20\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelDRAW.CMX.16\shell\Open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelBarCode.16\protocol\StdFileEditing\server : 
+Reg_Path : No key was find: HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432node\Adobe\Adobe Bridge\cc\installer : installpath
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.14\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15.1\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.16\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.20\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelDRAW.CMX.16\shell\Open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelBarCode.16\protocol\StdFileEditing\server : 
+x64
+Copy : destination=""
+CPI
+Start 64bit CPI Copy
+copying now
+system32 found
+wow64 found
+copyed
+Delete old cpi
+Reg_Path : No key was find: HKEY_LOCAL_MACHINE\SOFTWARE\Adobe\Adobe Bridge\cc\installer : installpath
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.14\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15.1\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.16\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.20\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelDRAW.CMX.16\shell\Open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelBarCode.16\protocol\StdFileEditing\server : 
+Reg_Path : No key was find: HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432node\Adobe\Adobe Bridge\cc\installer : installpath
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.14\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15.1\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.16\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.20\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelDRAW.CMX.16\shell\Open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelBarCode.16\protocol\StdFileEditing\server : 
+Reg_Path : No key was find: HKEY_LOCAL_MACHINE\SOFTWARE\Adobe\Adobe Bridge\cc\installer : installpath
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.14\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15.1\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.16\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.20\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelDRAW.CMX.16\shell\Open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelBarCode.16\protocol\StdFileEditing\server : 
+Reg_Path : No key was find: HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432node\Adobe\Adobe Bridge\cc\installer : installpath
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.14\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15.1\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.16\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.20\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelDRAW.CMX.16\shell\Open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelBarCode.16\protocol\StdFileEditing\server : 
+Reg_Path : No key was find: HKEY_LOCAL_MACHINE\SOFTWARE\Adobe\Adobe Bridge\cc\installer : installpath
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.14\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15.1\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.16\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.20\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelDRAW.CMX.16\shell\Open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelBarCode.16\protocol\StdFileEditing\server : 
+Reg_Path : No key was find: HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432node\Adobe\Adobe Bridge\cc\installer : installpath
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.14\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.15.1\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.16\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\Adobe.Illustrator.20\shell\open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelDRAW.CMX.16\shell\Open\command : 
+Reg_Path : No key was find: HKEY_CLASSES_ROOT\CorelBarCode.16\protocol\StdFileEditing\server : 
+all done

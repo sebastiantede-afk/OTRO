@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Gastos e Ingresos</title>
+    <!-- Configuración para PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Finanzas">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+        .text-custom-income {
+            color: #00BFFF; /* Celeste */
+        }
+        .text-custom-expense {
+            color: #FF4136; /* Rojo */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 sm:p-8">
+    <div id="main-view" class="max-w-4xl mx-auto space-y-8">
+        <!-- Título principal y descripción -->
+        <header class="text-center">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-800">Gestor de Gastos e Ingresos</h1>
+            <p class="mt-2 text-lg text-gray-600">
+                Lleva un registro de tus finanzas personales de manera sencilla.
+            </p>
+        </header>
+
+        <!-- Botones de navegación y acción -->
+        <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+            <button id="show-queries-btn" class="flex-1 bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-md shadow-md transition-colors">
+                Ver Consultas Especiales
+            </button>
+            <button id="open-spreadsheet-btn" class="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-md shadow-md transition-colors">
+                Ir a Planilla de Cálculos
+            </button>
+        </div>
+
+        <!-- Sección de ingreso de transacciones -->
+        <div class="bg-white rounded-xl shadow-lg p-6 sm:p-8">
+            <h2 class="text-2xl font-semibold mb-6 text-gray-700">Añadir Nueva Transacción</h2>
+            <form id="transaction-form" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha</label>
+                        <input type="date" id="fecha" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2">
+                    </div>
+                    <div>
+                        <label for="concepto" class="block text-sm font-medium text-gray-700">Concepto</label>
+                        <select id="concepto" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2">
+                            <option value="">Selecciona...</option>
+                            <option value="Ingreso">Ingreso</option>
+                            <option value="Gasto">Gasto</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label for="referencia" class="block text-sm font-medium text-gray-700">Referencia</label>
+                    <select id="referencia" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2">
+                        <option value="">Selecciona...</option>
+                        <option value="PERSONALES">PERSONALES</option>
+                        <option value="NENAS">NENAS</option>
+                        <option value="ALBICELESTE">ALBICELESTE</option>
+                        <option value="TDSCO">TDSCO</option>
+                        <option value="GTDSCO">GTDSCO</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripción</label>
+                    <input type="text" id="descripcion" placeholder="Ej. Sueldo mensual" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2">
+                </div>
+                <div>
+                    <label for="cantidad" class="block text-sm font-medium text-gray-700">Cantidad ($)</label>
+                    <input type="number" id="cantidad" placeholder="Ej. 50.00" step="0.01" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2">
+                </div>
+                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition-colors">
+                    Añadir Transacción
+                </button>
+            </form>
+        </div>
+
+        <!-- Sección de resumen y filtro por fechas -->
+        <div class="bg-white rounded-xl shadow-lg p-6 sm:p-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-700">Resumen del Período</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center text-white font-medium">
+                <div class="bg-green-500 rounded-lg p-4 shadow-md">
+                    <h3 class="text-lg">Total Ingresos</h3>
+                    <p id="total-ingresos" class="text-3xl font-bold mt-1">$0.00</p>
+                </div>
+                <div class="bg-red-500 rounded-lg p-4 shadow-md">
+                    <h3 class="text-lg">Total Gastos</h3>
+                    <p id="total-gastos" class="text-3xl font-bold mt-1">$0.00</p>
+                </div>
+                <div class="bg-blue-500 rounded-lg p-4 shadow-md">
+                    <h3 class="text-lg">Diferencia</h3>
+                    <p id="diferencia" class="text-3xl font-bold mt-1">$0.00</p>
+                </div>
+            </div>
+            
+            <div class="mt-6 flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <div class="flex-1 w-full">
+                    <label for="fecha-inicio" class="block text-sm font-medium text-gray-700">Fecha Inicial</label>
+                    <input type="date" id="fecha-inicio" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                </div>
+                <div class="flex-1 w-full">
+                    <label for="fecha-final" class="block text-sm font-medium text-gray-700">Fecha Final</label>
+                    <input type="date" id="fecha-final" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección de desglose mensual -->
+        <div class="bg-white rounded-xl shadow-lg p-6 sm:p-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-700">Resumen por Mes</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mes</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ingresos</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gastos</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resumen-mensual" class="bg-white divide-y divide-gray-200">
+                        <!-- Las filas se generarán con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tabla de transacciones -->
+        <div class="bg-white rounded-xl shadow-lg p-6 sm:p-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-700">Últimos 10 Movimientos</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Concepto</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Referencia</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descripción</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactions-table" class="bg-white divide-y divide-gray-200">
+                        <!-- Las transacciones se generarán con JavaScript (solo los últimos 10) -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección de Consultas Especiales (inicialmente oculta) -->
+    <div id="queries-view" class="max-w-4xl mx-auto space-y-8 hidden">
+        <header class="text-center">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-800">Consultas Especiales</h1>
+            <p class="mt-2 text-lg text-gray-600">
+                Selecciona las referencias que deseas comparar para ver el balance.
+            </p>
+        </header>
+
+        <!-- Botón para volver a la vista principal -->
+        <div class="text-center">
+            <button id="show-main-btn" class="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-md shadow-md transition-colors">
+                Volver
+            </button>
+        </div>
+
+        <!-- Sección de selección de consultas -->
+        <div class="bg-white rounded-xl shadow-lg p-6 sm:p-8">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-700">Calcular Balance</h2>
+            <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 items-end">
+                <div class="flex-1 w-full">
+                    <label for="income-reference" class="block text-sm font-medium text-gray-700">Referencia de Ingresos</label>
+                    <select id="income-reference" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                        <option value="">Selecciona...</option>
+                        <option value="PERSONALES">PERSONALES</option>
+                        <option value="NENAS">NENAS</option>
+                        <option value="ALBICELESTE">ALBICELESTE</option>
+                        <option value="TDSCO">TDSCO</option>
+                        <option value="GTDSCO">GTDSCO</option>
+                    </select>
+                </div>
+                <div class="flex-1 w-full">
+                    <label for="expense-reference" class="block text-sm font-medium text-gray-700">Referencia de Gastos</label>
+                    <select id="expense-reference" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2">
+                        <option value="">Selecciona...</option>
+                        <option value="PERSONALES">PERSONALES</option>
+                        <option value="NENAS">NENAS</option>
+                        <option value="ALBICELESTE">ALBICELESTE</option>
+                        <option value="TDSCO">TDSCO</option>
+                        <option value="GTDSCO">GTDSCO</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="text-center mt-6">
+                <h3 class="text-lg font-semibold text-gray-700">Balance Calculado:</h3>
+                <p id="balance-result" class="text-3xl font-bold mt-2">$0.00</p>
+            </div>
+        </div>
+
+        <!-- Tabla de Resultados (oculta hasta que se realice una consulta) -->
+        <div class="bg-white rounded-xl shadow-lg p-6 sm:p-8 hidden" id="results-table-container">
+            <h2 class="text-2xl font-semibold mb-4 text-gray-700">Resultados</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Concepto</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Referencia</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Descripción</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-table" class="bg-white divide-y divide-gray-200"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Script de la aplicación -->
+    <script>
+        // REFERENCIAS IMPORTANTES
+        // Pega aquí la URL de la aplicación web que copiaste en el paso 2
+        // ¡DEBES REEMPLAZAR ESTA URL DE EJEMPLO POR LA TUYA REAL DE APPS SCRIPT!
+        const googleAppsScriptURL = "https://script.google.com/macros/s/AKfycbzxGGausq-4QmyspNRj2GrhWctMrAvYVj3BsIbMUEaTHWi7mVBEV0CpORNHuaYSzsAmew/exec"; 
+
+        // Referencias a los elementos del DOM
+        const form = document.getElementById('transaction-form');
+        const fechaInput = document.getElementById('fecha');
+        const conceptoInput = document.getElementById('concepto');
+        const referenciaInput = document.getElementById('referencia');
+        const descripcionInput = document.getElementById('descripcion');
+        const cantidadInput = document.getElementById('cantidad');
+        const transactionsTable = document.getElementById('transactions-table');
+        const totalIngresosEl = document.getElementById('total-ingresos');
+        const totalGastosEl = document.getElementById('total-gastos');
+        const diferenciaEl = document.getElementById('diferencia');
+        const fechaInicioInput = document.getElementById('fecha-inicio');
+        const fechaFinalInput = document.getElementById('fecha-final');
+        const resumenMensualTable = document.getElementById('resumen-mensual');
+        const openSpreadsheetBtn = document.getElementById('open-spreadsheet-btn'); 
+
+        // Botones de navegación
+        const showQueriesBtn = document.getElementById('show-queries-btn');
+        const showMainBtn = document.getElementById('show-main-btn');
+
+        // Vistas
+        const mainView = document.getElementById('main-view');
+        const queriesView = document.getElementById('queries-view');
+        
+        // Elementos de consultas especiales
+        const incomeReferenceSelect = document.getElementById('income-reference');
+        const expenseReferenceSelect = document.getElementById('expense-reference');
+        const balanceResultEl = document.getElementById('balance-result');
+        const resultsTableContainer = document.getElementById('results-table-container');
+        const resultsTable = document.getElementById('results-table');
+        
+        // Array para almacenar las transacciones
+        let transactions = [];
+
+        // Nombres de los meses para el resumen
+        const meses = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+
+        // Función para cargar las transacciones desde el almacenamiento local
+        function loadTransactions() {
+            const storedTransactions = localStorage.getItem('transactions');
+            if (storedTransactions) {
+                transactions = JSON.parse(storedTransactions);
+            }
+        }
+
+        // Función para guardar las transacciones en el almacenamiento local
+        function saveTransactions() {
+            localStorage.setItem('transactions', JSON.stringify(transactions));
+        }
+
+        // Función para renderizar la tabla de transacciones (Ahora solo muestra los últimos 10)
+        function renderTransactions() {
+            transactionsTable.innerHTML = '';
+            
+            // Ordena las transacciones por fecha y luego toma las últimas 10
+            const sortedTransactions = [...transactions].sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+            const lastTenTransactions = sortedTransactions.slice(0, 10);
+            
+            lastTenTransactions.forEach((t, index) => {
+                const row = document.createElement('tr');
+                row.className = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+                
+                // Usamos 2 decimales para el formato de visualización, aunque el dato se guarda con más si es necesario.
+                const cantidadFormatted = new Intl.NumberFormat('es-AR', {
+                    style: 'currency',
+                    currency: 'ARS',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(t.cantidad);
+
+                const cantidadClass = t.concepto === 'Ingreso' ? 'text-custom-income' : 'text-custom-expense';
+                
+                // Formatear la fecha a DD/MM/AA
+                const date = new Date(t.fecha);
+                const formattedDate = date.toLocaleDateString('es-AR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: '2-digit'
+                });
+                
+                // Buscamos el índice original en el array 'transactions' para la función deleteTransaction
+                const originalIndex = transactions.findIndex(item => item.fecha === t.fecha && item.descripcion === t.descripcion && item.cantidad === t.cantidad);
+
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formattedDate}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${t.concepto}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${t.referencia}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${t.descripcion}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm ${cantidadClass} font-medium">${cantidadFormatted}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <button onclick="deleteTransaction(${originalIndex})" class="text-red-600 hover:text-red-900 font-bold transition-colors">Eliminar</button>
+                    </td>
+                `;
+                transactionsTable.appendChild(row);
+            });
+        }
+
+        // Función para eliminar una transacción
+        function deleteTransaction(index) {
+            // Se usa el índice real en el array 'transactions' para asegurar la eliminación correcta
+            transactions.splice(index, 1); 
+            saveTransactions();
+            updateSummary();
+            renderTransactions();
+            renderMonthlySummary();
+            updateQueries();
+        }
+
+        // Función para actualizar el resumen de totales
+        function updateSummary() {
+            const fechaInicio = fechaInicioInput.value ? new Date(fechaInicioInput.value) : null;
+            const fechaFinal = fechaFinalInput.value ? new Date(fechaFinalInput.value) : null;
+
+            const filteredTransactions = transactions.filter(t => {
+                const transactionDate = new Date(t.fecha + 'T00:00:00'); // Asegura la hora a medianoche
+                const afterStart = !fechaInicio || transactionDate >= fechaInicio;
+                // Para incluir el día final:
+                const endOfDay = fechaFinal ? new Date(fechaFinal.getTime()) : null;
+                if (endOfDay) {
+                    endOfDay.setHours(23, 59, 59, 999);
+                }
+                const beforeEnd = !endOfDay || transactionDate <= endOfDay;
+                return afterStart && beforeEnd;
+            });
+
+            const totalIngresos = filteredTransactions.filter(t => t.concepto === 'Ingreso').reduce((sum, t) => sum + parseFloat(t.cantidad), 0);
+            const totalGastos = filteredTransactions.filter(t => t.concepto === 'Gasto').reduce((sum, t) => sum + parseFloat(t.cantidad), 0);
+            const diferencia = totalIngresos - totalGastos;
+
+            const formatter = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' });
+
+            totalIngresosEl.textContent = formatter.format(totalIngresos);
+            totalGastosEl.textContent = formatter.format(totalGastos);
+            diferenciaEl.textContent = formatter.format(diferencia);
+        }
+
+        // Función para renderizar el resumen mensual
+        function renderMonthlySummary() {
+            resumenMensualTable.innerHTML = '';
+            const monthlyData = {};
+
+            transactions.forEach(t => {
+                const date = new Date(t.fecha);
+                const year = date.getFullYear();
+                const month = date.getMonth();
+
+                if (!monthlyData[year]) {
+                    monthlyData[year] = {};
+                }
+                if (!monthlyData[year][month]) {
+                    monthlyData[year][month] = { ingresos: 0, gastos: 0 };
+                }
+
+                if (t.concepto === 'Ingreso') {
+                    monthlyData[year][month].ingresos += parseFloat(t.cantidad);
+                } else if (t.concepto === 'Gasto') {
+                    monthlyData[year][month].gastos += parseFloat(t.cantidad);
+                }
+            });
+
+            // Muestra el resumen del año actual y pasado para tener más contexto
+            const currentYear = new Date().getFullYear();
+            const yearsToShow = [currentYear - 1, currentYear].filter(year => year in monthlyData).sort((a, b) => a - b);
+            
+            yearsToShow.forEach(year => {
+                // Agregar una fila de encabezado para el año si hay más de uno
+                if (yearsToShow.length > 1) {
+                    const yearRow = document.createElement('tr');
+                    yearRow.className = 'bg-gray-200';
+                    yearRow.innerHTML = `<td colspan="3" class="px-6 py-2 text-center text-sm font-bold text-gray-800">${year}</td>`;
+                    resumenMensualTable.appendChild(yearRow);
+                }
+
+                for (let i = 0; i < 12; i++) {
+                    if (monthlyData[year] && monthlyData[year][i]) {
+                        const mes = meses[i];
+                        const data = monthlyData[year][i];
+
+                        const formatter = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' });
+
+                        const row = document.createElement('tr');
+                        row.className = 'hover:bg-gray-100';
+                        row.innerHTML = `
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 capitalize">${mes}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-green-600 font-medium">${formatter.format(data.ingresos)}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-medium">${formatter.format(data.gastos)}</td>
+                        `;
+                        resumenMensualTable.appendChild(row);
+                    }
+                }
+            });
+            
+            if (resumenMensualTable.children.length === 0) {
+                 resumenMensualTable.innerHTML = '<tr><td colspan="3" class="px-6 py-4 text-center text-gray-500">No hay transacciones registradas.</td></tr>';
+            }
+        }
+
+        // Función para mostrar un mensaje al usuario (en lugar de alert())
+        function showMessageBox(message, duration = 3000) {
+            const messageBox = document.createElement('div');
+            messageBox.className = "fixed bottom-5 left-1/2 -translate-x-1/2 bg-gray-800 text-white p-4 rounded-lg shadow-lg z-50 text-center transition-opacity duration-300";
+            messageBox.textContent = message;
+            document.body.appendChild(messageBox);
+            setTimeout(() => {
+                messageBox.classList.add('opacity-0');
+                setTimeout(() => messageBox.remove(), 300);
+            }, duration); 
+        }
+
+        // Función para enviar una sola transacción a la hoja de cálculo (CORREGIDA)
+        async function saveTransactionToSheet(transaction) {
+            // Verificar si la URL de Apps Script ha sido configurada
+            if (googleAppsScriptURL.includes("AKfycbwCmLQ3XjOCg_wh8n7f3wxEvtTzZJrpY7P1vDYUnBwRA9cvUtPPRsGgy2vuouqcyHmkEQ")) {
+                const message = "Advertencia: Por favor, configura la URL de tu Google Apps Script. Los datos solo se guardan localmente.";
+                showMessageBox(message);
+                return;
+            }
+
+            try {
+                // 1. Preparamos los datos como parámetros de URL (para usar GET, que funciona mejor con Apps Script)
+                const params = new URLSearchParams({
+                    FECHA: transaction.fecha, // YYYY-MM-DD
+                    CONCEPTO: transaction.concepto,
+                    REFERENCIA: transaction.referencia,
+                    CANTIDAD: transaction.cantidad,
+                    DESCRIPCION: transaction.descripcion
+                });
+
+                // 2. Usamos el método GET con los parámetros, que Apps Script maneja como doGET
+                // El endpoint de Apps Script debe terminar en /exec
+                const finalUrl = `${googleAppsScriptURL}?${params.toString()}`;
+
+                // Usamos 'no-cors' para evitar errores de CORS, ya que solo necesitamos enviar el dato y no leer la respuesta de Apps Script
+                const response = await fetch(finalUrl, {
+                    method: 'GET', // Usamos GET para el envío de datos simples a doGET
+                    mode: 'no-cors', 
+                    cache: 'no-cache',
+                });
+                
+                // Nota: Debido a 'no-cors', la 'response' aquí es opaca y no se puede verificar el éxito.
+                // Si el script es correcto, el dato se habrá enviado. 
+                // Asumimos el éxito para la UI, pero el verdadero éxito depende del script de Apps Script.
+                const message = "¡Transacción guardada localmente y enviada a Google Sheet! (Verifica la Planilla en unos segundos)";
+                showMessageBox(message);
+
+            } catch (error) {
+                const message = `Error de conexión al enviar datos a Google Sheet: ${error.message}. Verifica que el despliegue de tu Apps Script esté correcto.`;
+                showMessageBox(message);
+                console.error("Error al guardar en Google Sheet:", error);
+            }
+        }
+
+
+        // Manejador del formulario para añadir una nueva transacción
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const newTransaction = {
+                fecha: fechaInput.value,
+                concepto: conceptoInput.value,
+                referencia: referenciaInput.value,
+                descripcion: descripcionInput.value,
+                // Aseguramos que la cantidad sea un número
+                cantidad: parseFloat(cantidadInput.value),
+            };
+
+            transactions.push(newTransaction);
+            saveTransactions();
+            renderTransactions();
+            updateSummary();
+            renderMonthlySummary();
+            form.reset(); 
+            
+            // Enviamos la transacción a Google Sheet de forma asíncrona
+            await saveTransactionToSheet(newTransaction);
+        });
+
+        // Evento para autocompletar la descripción
+        referenciaInput.addEventListener('change', () => {
+            if (referenciaInput.value === 'ALBICELESTE') {
+                descripcionInput.value = 'SUELDO';
+            } else if (descripcionInput.value === 'SUELDO' && referenciaInput.value !== 'ALBICELESTE') {
+                // Borra el valor si se cambia a otra referencia y estaba en 'SUELDO'
+                descripcionInput.value = '';
+            }
+        });
+
+        // Evento para abrir la planilla de Google
+        openSpreadsheetBtn.addEventListener('click', () => {
+             // Como la variable apunta al script, no a la planilla, no la abrimos. 
+             // Le pedimos al usuario que pegue el enlace de la planilla directamente, o asumimos la URL del script sin /exec
+            const genericSheetUrl = "https://docs.google.com/spreadsheets/u/0/"; 
+            if (googleAppsScriptURL && !googleAppsScriptURL.includes("AKfycbwCmLQ3XjOCg_wh8n7f3wxEvtTzZJrpY7P1vDYUnBwRA9cvUtPPRsGgy2vuouqcyHmkEQ")) {
+                 showMessageBox("Abriendo la URL de tu Apps Script. Si quieres abrir la planilla, pega su URL aquí.");
+                 window.open(googleAppsScriptURL.replace('/exec', ''), '_blank');
+            } else {
+                 showMessageBox("Por favor, configura la URL de tu Google Apps Script para usar este botón.", 3000);
+                 window.open(genericSheetUrl, '_blank');
+            }
+        });
+
+
+        // Registro del Service Worker para PWA (mantenido)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                // Solo registramos si tenemos un archivo 'service-worker.js' real
+                // navigator.serviceWorker.register('service-worker.js') 
+                //     .then(reg => {
+                //         console.log('Service Worker registrado con éxito:', reg);
+                //     })
+                //     .catch(err => {
+                //         console.log('Fallo el registro de Service Worker:', err);
+                //     });
+            });
+        }
+
+        // --- Lógica para las consultas especiales (mantenida) ---
+        function updateQueries() {
+            const incomeReference = incomeReferenceSelect.value;
+            const expenseReference = expenseReferenceSelect.value;
+
+            resultsTableContainer.classList.add('hidden');
+            resultsTable.innerHTML = '';
+
+            let totalIngresos = 0;
+            let totalGastos = 0;
+            let combinedTransactions = [];
+
+            if (incomeReference) {
+                const incomeTransactions = transactions.filter(t => t.concepto === 'Ingreso' && t.referencia === incomeReference);
+                totalIngresos = incomeTransactions.reduce((sum, t) => sum + parseFloat(t.cantidad), 0);
+                combinedTransactions = combinedTransactions.concat(incomeTransactions);
+            }
+
+            if (expenseReference) {
+                const expenseTransactions = transactions.filter(t => t.concepto === 'Gasto' && t.referencia === expenseReference);
+                totalGastos = expenseTransactions.reduce((sum, t) => sum + parseFloat(t.cantidad), 0);
+                combinedTransactions = combinedTransactions.concat(expenseTransactions);
+            }
+
+            if (incomeReference || expenseReference) {
+                const balance = totalIngresos - totalGastos;
+                const formatter = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' });
+                balanceResultEl.textContent = formatter.format(balance);
+                balanceResultEl.className = balance >= 0 ? 'text-3xl font-bold mt-2 text-green-600' : 'text-3xl font-bold mt-2 text-red-600';
+                
+                if (combinedTransactions.length > 0) {
+                    // Se ordena por fecha para la vista de consulta
+                    combinedTransactions.sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+                    renderFilteredTable(combinedTransactions);
+                    resultsTableContainer.classList.remove('hidden');
+                }
+            } else {
+                balanceResultEl.textContent = '$0,00';
+                balanceResultEl.className = 'text-3xl font-bold mt-2 text-gray-800';
+            }
+        }
+        
+        function renderFilteredTable(filteredTransactions) {
+            resultsTable.innerHTML = '';
+            filteredTransactions.forEach((t, index) => {
+                const row = document.createElement('tr');
+                row.className = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+                
+                const cantidadFormatted = new Intl.NumberFormat('es-AR', {
+                    style: 'currency',
+                    currency: 'ARS',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                }).format(t.cantidad);
+
+                const formattedDate = new Date(t.fecha).toLocaleDateString('es-AR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: '2-digit'
+                });
+                
+                const cantidadClass = t.concepto === 'Ingreso' ? 'text-custom-income' : 'text-custom-expense';
+
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${formattedDate}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${t.concepto}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${t.referencia}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${t.descripcion}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm ${cantidadClass} font-medium">${cantidadFormatted}</td>
+                `;
+                resultsTable.appendChild(row);
+            });
+        }
+
+        // Manejadores de eventos para los botones de navegación
+        showQueriesBtn.addEventListener('click', () => {
+            mainView.classList.add('hidden');
+            queriesView.classList.remove('hidden');
+            updateQueries();
+        });
+
+        showMainBtn.addEventListener('click', () => {
+            queriesView.classList.add('hidden');
+            mainView.classList.remove('hidden');
+        });
+
+        // Eventos para actualizar la consulta al cambiar las referencias
+        incomeReferenceSelect.addEventListener('change', updateQueries);
+        expenseReferenceSelect.addEventListener('change', updateQueries);
+
+        // Eventos para actualizar el resumen al cambiar las fechas
+        fechaInicioInput.addEventListener('change', updateSummary);
+        fechaFinalInput.addEventListener('change', updateSummary);
+
+        // Inicializar la aplicación al cargar la página
+        window.onload = function() {
+            loadTransactions();
+            updateSummary();
+            renderTransactions(); // Primero cargamos, luego filtramos y renderizamos
+            renderMonthlySummary();
+        };
+    </script>
+</body>
+</html>
